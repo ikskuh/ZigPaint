@@ -25,9 +25,10 @@ pub fn loadFunctions(comptime Prototypes: type) LoaderError!Prototypes {
     const info = @typeInfo(Prototypes);
     std.debug.assert(builtin.TypeId(info) == .Struct);
 
+    @setEvalBranchQuota(10000);
     inline for (info.Struct.fields) |fld| {
         const name = "gl" ++ [_]u8 { std.ascii.toUpper(fld.name[0]) } ++ fld.name[1..];
-
+                                                                       
         const ep = try libgl.?.getEntryPoint(name);
 
         if(@typeId(fld.field_type) != .Fn) {
@@ -43,6 +44,4 @@ pub const GLuint = c_uint;
 pub const GLint = c_int;
 pub const GLenum = c_uint;
 
-pub const GL_1_3 = struct {
-    bindBuffer: extern fn (target: GLenum, buffer: GLuint) void,
-};
+pub const GL_1_3 = @import("versions/GL_VERSION_1_3.zig");
