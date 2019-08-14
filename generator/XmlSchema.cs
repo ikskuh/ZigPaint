@@ -118,6 +118,9 @@ namespace OpenGL
 
 		[XmlText]
 		public string Proto { get; set; }
+		
+		[XmlElement("ptype")]
+		public string Type { get; set; }
 	}
 
 	public class CommandParam
